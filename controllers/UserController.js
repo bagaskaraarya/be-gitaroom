@@ -217,4 +217,56 @@ async function deleteUser(req, res) {
   }
 }
 
-export { getUsers, getUserById, createUser, updateUser, deleteUser };
+// LOGIN
+async function login(req, res) {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      const error = new Error("Email atau password salah");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      const error = new Error("Email atau password salah");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const { password: _, ...safeUserData } = user.toJSON();
+
+    return res.status(200).json({
+      status: "Success",
+      message: "Login Berhasil",
+      data: safeUserData,
+    });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({
+      status: "Error",
+      message: error.message,
+    });
+  }
+}
+
+// LOGOUT
+async function logout(req, res) {
+  try {
+    // Tidak perlu cek cookie atau update DB
+    return res.status(200).json({
+      status: "Success",
+      message: "Logout Berhasil",
+    });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({
+      status: "Error",
+      message: error.message,
+    });
+  }
+}
+
+export { getUsers, getUserById, createUser, updateUser, deleteUser, login, logout };

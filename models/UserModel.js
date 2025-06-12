@@ -13,9 +13,13 @@ const User = db.define(
           args: true,
           msg: "Email sudah tersedia. Gunakan Email Lainnya"
       }
+    },
+    gender: Sequelize.STRING,
+    role:{
+      type: Sequelize.ENUM("penjual", "pembeli"),
+      allowNull: false,
     }, 
     password: Sequelize.STRING,
-    alamat: Sequelize.STRING
   }
 );
 
