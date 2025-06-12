@@ -1,16 +1,14 @@
 import User from "../models/UserModel.js";
+import bcrypt from "bcrypt";
 
-// GET USER
+// GET SEMUA USER
 async function getUsers(req, res) {
   try {
-    // Lakukan query "SELECT * nama_tabel" ke db, simpan ke dalam variabel "users"
     const users = await User.findAll();
-
-    // Kirim respons sukses (200)
     return res.status(200).json({
       status: "Success",
       message: "Users Retrieved",
-      data: users, // <- Data seluruh user
+      data: users,
     });
   } catch (error) {
     return res.status(error.statusCode || 500).json({
@@ -23,26 +21,18 @@ async function getUsers(req, res) {
 // GET USER BY ID
 async function getUserById(req, res) {
   try {
-    /*
-      Lakukan query "SELECT * nama_tabel WHERE id = id" ke db
-      id diambil dari parameter dari endpoint.
-      Setelah itu, simpan hasil query ke dalam variabel "user"
-    */
     const user = await User.findOne({ where: { id: req.params.id } });
 
-    // Cek user yg diambil ada apa engga
-    // Kalo user gada, masuk ke catch dengan message "User tidak ditemukan 😮" (400)
     if (!user) {
       const error = new Error("User tidak ditemukan 😮");
       error.statusCode = 400;
       throw error;
     }
 
-    // Kalo user ada, kirim respons sukses (200)
     return res.status(200).json({
       status: "Success",
       message: "User Retrieved",
-      data: user, // <- Data user yg diambil
+      data: user,
     });
   } catch (error) {
     return res.status(error.statusCode || 500).json({
@@ -69,7 +59,7 @@ async function createUser(req, res) {
       name,
       email,
       gender,
-      role,
+      role: role || "user",
       password: encryptPassword,
     });
 
@@ -213,4 +203,12 @@ async function logout(req, res) {
   }
 }
 
-export { getUsers, getUserById, createUser, updateUser, deleteUser, login, logout };
+export {
+  getUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+  login,
+  logout,
+};

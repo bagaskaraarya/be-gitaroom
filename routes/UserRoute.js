@@ -6,18 +6,19 @@ import {
   deleteUser,
   getUserById,
   login,
-  logout
+  logout,
 } from "../controllers/UserController.js";
 
 const router = express.Router();
-
-// Endpoint untuk CRUD users
+// Endpoint buat login & logout
 router.post("/login", login);
-router.delete("logout", logout);
+router.delete("/logout", logout);
+
+
 router.get("/users", getUsers);
 router.get("/users/:id", getUserById);
 router.post("/users", createUser);
-router.put("/users/:id", updateUser);
+router.put("/users/:id", updateUser,);
 router.delete("/users/:id", deleteUser);
 
 export default router;

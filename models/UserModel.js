@@ -1,27 +1,22 @@
 import { Sequelize } from "sequelize";
-import db from "../config/Database.js";
+import db from "../config/database.js";
 
-// Membuat tabel "user"
+// Membuat tabel "users"
 const User = db.define(
-  "users", // Nama Tabel
+  "user", // Nama Tabel
   {
     name: Sequelize.STRING,
-    email: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      unique: {
-          args: true,
-          msg: "Email sudah tersedia. Gunakan Email Lainnya"
-      }
-    },
+    email: Sequelize.STRING,
     gender: Sequelize.STRING,
-    role:{
-      type: Sequelize.ENUM("penjual", "pembeli"),
-      allowNull: false,
-    }, 
     password: Sequelize.STRING,
+      role: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    defaultValue: 'user',
+  },
   }
 );
+
 
 db.sync().then(() => console.log("Database synced"));
 
