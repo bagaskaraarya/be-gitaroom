@@ -1,15 +1,16 @@
 import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
 
-// Koneksi ke Cloud SQL MySQL instance
-const db = new Sequelize("gitaroom", "root", "", {
-  host: "localhost",  // IP publik instance Cloud SQL kamu
-  dialect: "mysql",
-  dialectOptions: {
-    ssl: {
-      require: true, // Hanya kalau SSL diaktifkan
-      rejectUnauthorized: false,
-    },
-  },
-});
+dotenv.config();
+
+const db = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USERNAME,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    dialect: "mysql",
+  }
+);
 
 export default db;
